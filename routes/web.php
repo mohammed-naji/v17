@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', function() {
@@ -24,31 +25,31 @@ use Illuminate\Support\Facades\Route;
 // Route::patch('url', 'action');
 // Route::delete('url', 'action');
 
-Route::post('/', function() {
-    return 'Homepage';
-});
+// Route::post('/', function() {
+//     return 'Homepage';
+// });
 
-Route::put('/', function() {
-    return 'Homepage';
-});
+// Route::put('/', function() {
+//     return 'Homepage';
+// });
 
 // Route::get('/', function() {
 //     return view('welcome');
 // });
 
-Route::view('/', 'welcome');
+// Route::view('/', 'welcome');
 
-Route::match(['put', 'patch'], '/edit', function() {
-    return 'Edit page';
-});
+// Route::match(['put', 'patch'], '/edit', function() {
+//     return 'Edit page';
+// });
 
-Route::any('policy', function() {
-    return 'Any Content';
-});
+// Route::any('policy', function() {
+//     return 'Any Content';
+// });
 
-Route::get('user/{name}/{age}', function($name, $age) {
-    return "Welcome $name, your age is $age";
-})->whereAlpha('name');
+// Route::get('user/{name}/{age}', function($name, $age) {
+//     return "Welcome $name, your age is $age";
+// })->whereAlpha('name');
 
 // // method chain
 // class Car {
@@ -68,6 +69,30 @@ Route::get('user/{name}/{age}', function($name, $age) {
 // $c1->getName()->getModel();
 
 
+// home , about , contact
+Route::get('/', function() {
+    // $link = url('/contact-us');
+    // $link = route('contactpage');
+    // return "<a href='$link'>Contact Us</a>";
+
+    $name = 'go';
+    $type = 'classroom';
+
+    // $link = "/courses/$name/$type";
+    $link = route('coursepage', [$name, $type]);
+    return "<a href='$link'>Course Page</a>";
+});
+// Route::get('/about', function() {
+//     return 'About Us Page';
+// });
+
+Route::get('/contact-abc', function() {
+    return 'Contact Us Page';
+})->name('contactpage');
+
+Route::get('/courses/2023/{name}/new/{type?}', function($name, $type = 'online') {
+    return "Course $name and type $type";
+})->name('page.course');
 
 
 
@@ -75,3 +100,12 @@ Route::get('user/{name}/{age}', function($name, $age) {
 
 
 
+
+
+Route::prefix('student')->name('student.')->group(function() {
+    Route::get('/home', [StudentController::class, 'index'])->name('home');
+    Route::get('/info', [StudentController::class, 'info'])->name('info');
+    Route::get('/avg', [StudentController::class, 'avg'])->name('avg');
+    Route::get('/subject', [StudentController::class, 'subject'])->name('subject');
+    Route::get('/marks', [StudentController::class, 'marks'])->name('marks');
+});
