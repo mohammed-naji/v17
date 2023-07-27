@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,31 +72,29 @@ use Illuminate\Support\Facades\Route;
 
 
 // home , about , contact
-Route::get('/', function() {
-    // $link = url('/contact-us');
-    // $link = route('contactpage');
-    // return "<a href='$link'>Contact Us</a>";
+// Route::get('/', function() {
+//     // $link = url('/contact-us');
+//     // $link = route('contactpage');
+//     // return "<a href='$link'>Contact Us</a>";
 
-    $name = 'go';
-    $type = 'classroom';
+//     $name = 'go';
+//     $type = 'classroom';
 
-    // $link = "/courses/$name/$type";
-    $link = route('coursepage', [$name, $type]);
-    return "<a href='$link'>Course Page</a>";
-});
+//     // $link = "/courses/$name/$type";
+//     $link = route('coursepage', [$name, $type]);
+//     return "<a href='$link'>Course Page</a>";
+// });
 // Route::get('/about', function() {
 //     return 'About Us Page';
 // });
 
-Route::get('/contact-abc', function() {
-    return 'Contact Us Page';
-})->name('contactpage');
+// Route::get('/contact-abc', function() {
+//     return 'Contact Us Page';
+// })->name('contactpage');
 
-Route::get('/courses/2023/{name}/new/{type?}', function($name, $type = 'online') {
-    return "Course $name and type $type";
-})->name('page.course');
-
-
+// Route::get('/courses/2023/{name}/new/{type?}', function($name, $type = 'online') {
+//     return "Course $name and type $type";
+// })->name('page.course');
 
 
 
@@ -102,10 +102,26 @@ Route::get('/courses/2023/{name}/new/{type?}', function($name, $type = 'online')
 
 
 
-Route::prefix('student')->name('student.')->group(function() {
-    Route::get('/home', [StudentController::class, 'index'])->name('home');
-    Route::get('/info', [StudentController::class, 'info'])->name('info');
-    Route::get('/avg', [StudentController::class, 'avg'])->name('avg');
-    Route::get('/subject', [StudentController::class, 'subject'])->name('subject');
-    Route::get('/marks', [StudentController::class, 'marks'])->name('marks');
-});
+
+// Route::prefix('student')->name('student.')->group(function() {
+//     Route::get('/home', [StudentController::class, 'index'])->name('home');
+//     Route::get('/info', [StudentController::class, 'info'])->name('info');
+//     Route::get('/avg', [StudentController::class, 'avg'])->name('avg');
+//     Route::get('/subject', [StudentController::class, 'subject'])->name('subject');
+//     Route::get('/marks', [StudentController::class, 'marks'])->name('marks');
+// });
+
+
+// Route::get('/home', [AppController::class, 'home'])->name('home');
+
+// Route::get('user/{name}/{age}', [AppController::class, 'user']);
+
+// Route::get('/posts', [AppController::class, 'posts'])->name('posts');
+
+// Route::get('/answer/{ans}', [AppController::class, 'answer'])->name('answer');
+
+
+Route::get('/', [PersonalController::class, 'home'])->name('index');
+Route::get('contact', [PersonalController::class, 'contact'])->name('contact');
+Route::get('projects', [PersonalController::class, 'projects'])->name('projects');
+Route::get('resume', [PersonalController::class, 'resume'])->name('resume');
