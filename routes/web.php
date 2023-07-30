@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -125,3 +127,13 @@ Route::get('/', [PersonalController::class, 'home'])->name('index');
 Route::get('contact', [PersonalController::class, 'contact'])->name('contact');
 Route::get('projects', [PersonalController::class, 'projects'])->name('projects');
 Route::get('resume', [PersonalController::class, 'resume'])->name('resume');
+
+Route::prefix('blog')->name('blog.')->controller(BlogController::class)->group(function() {
+    Route::get('/', 'index')->name('index');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/contact', 'contact')->name('contact');
+    Route::get('/post', 'post')->name('post');
+});
+
+Route::get('form1', [FormController::class, 'form1'])->name('form1');
+Route::post('form1', [FormController::class, 'form1_data'])->name('form1_data');
