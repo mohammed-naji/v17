@@ -137,3 +137,9 @@ Route::prefix('blog')->name('blog.')->controller(BlogController::class)->group(f
 
 Route::get('form1', [FormController::class, 'form1'])->name('form1');
 Route::post('form1', [FormController::class, 'form1_data'])->name('form1_data');
+
+Route::get('form2', [FormController::class, 'form2'])->name('form2');
+Route::post('form2', [FormController::class, 'form2_data'])->name('form2_data');
+
+Route::get('form3', [FormController::class, 'form3'])->name('form3');
+Route::post('form3', [FormController::class, 'form3_data'])->name('form3_data');
