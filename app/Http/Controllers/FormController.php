@@ -61,4 +61,17 @@ class FormController extends Controller
         dd($request->all());
 
     }
+
+    function form4(){
+        return view('forms.form4');
+    }
+
+    function form4_data(Request $request){
+        // dd($request->all());
+
+        // $name = rand().time().$request->file('image')->getClientOriginalName();
+        $ex = $request->file('image')->getClientOriginalExtension();
+        $name = rand().rand().'_'.rand().'.'.$ex;
+        $request->file('image')->move(public_path('images'), $name);
+    }
 }

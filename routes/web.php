@@ -124,7 +124,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [PersonalController::class, 'home'])->name('index');
+
 Route::get('contact', [PersonalController::class, 'contact'])->name('contact');
+Route::post('contact', [PersonalController::class, 'contact_data'])->name('contact_data');
+
 Route::get('projects', [PersonalController::class, 'projects'])->name('projects');
 Route::get('resume', [PersonalController::class, 'resume'])->name('resume');
 
@@ -143,3 +146,6 @@ Route::post('form2', [FormController::class, 'form2_data'])->name('form2_data');
 
 Route::get('form3', [FormController::class, 'form3'])->name('form3');
 Route::post('form3', [FormController::class, 'form3_data'])->name('form3_data');
+
+Route::get('form4', [FormController::class, 'form4'])->name('form4');
+Route::post('form4', [FormController::class, 'form4_data'])->name('form4_data');
