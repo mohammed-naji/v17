@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\StudentController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', function() {
@@ -149,3 +150,7 @@ Route::post('form3', [FormController::class, 'form3_data'])->name('form3_data');
 
 Route::get('form4', [FormController::class, 'form4'])->name('form4');
 Route::post('form4', [FormController::class, 'form4_data'])->name('form4_data');
+
+Route::get('posts', function() {
+    dd( Post::all() );
+});
