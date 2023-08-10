@@ -4,6 +4,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StudentController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
@@ -154,3 +155,33 @@ Route::post('form4', [FormController::class, 'form4_data'])->name('form4_data');
 Route::get('posts', function() {
     dd( Post::all() );
 });
+
+
+
+
+// Products CRUD App
+// C => Create
+// R => Read
+// U => Update
+// D => Delete
+
+// // Create Routes
+// Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+// Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
+// // Read Routes
+// Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+// Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// // Update Routes
+// Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+// Route::match(['put', 'patch'],'/products/{product}', [ProductController::class, 'update'])
+// ->name('products.update');
+
+// // Delete Routes
+// Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+Route::resource('products', ProductController::class);
+
+
+//
