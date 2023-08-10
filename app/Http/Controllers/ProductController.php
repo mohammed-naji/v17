@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -27,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +36,47 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate data
+        $request->validate([
+            'name' => 'required|min:5',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'price' => 'required|numeric|gt:0',
+            'content' => 'required'
+        ]);
+
+        // upload file
+        $img = $request->file('image');
+        $img_name = rand().time().$img->getClientOriginalName();
+        $img->move(public_path('images'), $img_name);
+
+        // store in database
+        // $product = new Product();
+        // $product->name = $request->name;
+        // $product->image = $img_name;
+        // $product->price = $request->price;
+        // $product->content = $request->content;
+        // $product->save();
+
+        $data = $request->except('_token', 'image');
+        $data['image'] = $img_name;
+        Product::create($data);
+
+        // dd($data);
+
+        // Product::create([
+        //     'name' => $request->name,
+        //     'image' => $img_name,
+        //     'price' => $request->price,
+        //     'content' => $request->content,
+        // ]);
+
+
+
+        // redirect to another page
+        return redirect()
+        ->route('products.index')
+        ->with('msg', 'Product added successfully')
+        ->with('type', 'warning');
     }
 
     /**
@@ -75,7 +116,18 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Product::destroy($id);
+
+        $product = Product::findOrFail($id);
+
+        File::delete(public_path('images/'.$product->image)); // unlink
+
+        $product->delete();
+
+        return redirect()
+        ->route('products.index')
+        ->with('msg', 'Product deleted successfully')
+        ->with('type', 'error');
     }
 }
 

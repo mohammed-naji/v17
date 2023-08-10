@@ -13,7 +13,7 @@
 
     <div class="container my-5 text-center">
         <h1>{{ $product->name }}</h1>
-        <img src="{{ $product->image }}" alt="">
+        <img src="{{ asset('images/'.$product->image) }}" alt="">
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
