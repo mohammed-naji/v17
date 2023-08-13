@@ -180,8 +180,9 @@ Route::get('posts', function() {
 
 // // Delete Routes
 // Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-
+Route::get('/products/trash', [ProductController::class, 'trash'])->name('products.trash');
+Route::get('/products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore');
+Route::delete('/products/{product}/forcedelete', [ProductController::class, 'forcedelete'])->name('products.forcedelete');
 Route::resource('products', ProductController::class);
-
 
 //

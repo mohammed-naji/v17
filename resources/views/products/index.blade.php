@@ -35,7 +35,10 @@
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>All Products</h1>
+            <div>
+                <a class="btn btn-danger" href="{{ route('products.trash') }}">Trashed Products</a>
             <a class="btn btn-info" href="{{ route('products.create') }}">Add new Product</a>
+            </div>
         </div>
 
         {{-- @if (session('msg'))
@@ -60,21 +63,29 @@
             <tr>
                 {{-- <td>{{ $product->id }}</td> --}}
                 <td>{{ $loop->iteration }}</td>
-                <td><img width="80" src="{{ asset('images/'.$product->image) }}" alt=""></td>
+                <td>
+                    @php
+                        $img = asset('images/no-image.jpg');
+                        if (file_exists(public_path('images/'.$product->image))) {
+                            $img = asset('images/'.$product->image);
+                        }
+                    @endphp
+                    <img width="80" src="{{ $img }}" alt="">
+                </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->price }}$</td>
                 <td>{{ $product->created_at->format('F d, Y') }}</td>
                 <td>{{ $product->updated_at->diffForHumans() }}</td>
                 <td>
                     <a class="btn btn-success btn-sm" href="{{ route('products.show', $product->id) }}"><i class="fas fa-eye"></i></a>
-                    <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-primary btn-sm" href="{{ route('products.edit', $product->id) }}"><i class="fas fa-edit"></i></a>
                     <form class="d-inline" action="{{ route('products.destroy', $product->id) }}" method="POST">
                         @csrf
                         @method('delete')
                         {{-- <input type="hidden" name="_method" value="delete"> --}}
 
                         {{-- <button onclick="return confirm('Are you sure')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button> --}}
-                        <button type="button" onclick="deleteProduct(event)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button type="button" onclick="deleteProduct(event)" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
                     </form>
                     {{-- <a class="btn btn-danger btn-sm" href="{{ route('products.destroy', $product->id) }}"><i class="fas fa-trash"></i></a> --}}
                 </td>
@@ -116,6 +127,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -152,7 +164,28 @@ const Toast = Swal.mixin({
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
             if (result.isConfirmed) {
-                e.target.closest('form').submit()
+                // Send Ajax Request
+                // e.target.closest('form').submit()
+
+                // xmlhttprequest
+                // fetch
+                // jquery
+                // axios
+
+                // axios.get()
+                // axios.post()
+                // axios.put()
+                let url = e.target.closest('form').action
+                axios.post(url, {
+                    _method: 'delete'
+                })
+                .then(res => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Product deleted successfully'
+                    })
+                    e.target.closest('tr').remove()
+                })
             }
             })
         }

@@ -100,7 +100,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -108,7 +110,35 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // validate data
+        $request->validate([
+            'name' => 'required|min:5',
+            'image' => 'nullable|image|mimes:png,jpg,jpeg',
+            'price' => 'required|numeric|gt:0',
+            'content' => 'required'
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $data = $request->except('_token', 'image');
+
+        if($request->hasFile('image')) {
+            // upload file
+            File::delete(public_path('images/'.$product->image));
+            $img = $request->file('image');
+            $img_name = rand().time().$img->getClientOriginalName();
+            $img->move(public_path('images'), $img_name);
+            $data['image'] = $img_name;
+        }
+
+        $product->update($data);
+
+
+        // redirect to another page
+        return redirect()
+        ->route('products.index')
+        ->with('msg', 'Product updated successfully')
+        ->with('type', 'warning');
     }
 
     /**
@@ -116,19 +146,55 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        // Product::destroy($id);
+        Product::destroy($id);
+
+        // $product = Product::findOrFail($id);
+
+        // File::delete(public_path('images/'.$product->image)); // unlink
+
+        // $product->delete();
+
+        return 'Deleted';
+
+        // return redirect()
+        // ->route('products.index')
+        // ->with('msg', 'Product deleted successfully')
+        // ->with('type', 'error');
+    }
+
+    function trash() {
+        $products = Product::onlyTrashed()->latest('id')->paginate(20);
+
+        // $products = DB::select('select * from products where null deleted_at active = ?', [1])
+
+        return view('products.trash', compact('products'));
+    }
+
+    function restore($id) {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+
+        return redirect()
+        ->route('products.trash')
+        ->with('msg', 'Product restored successfully')
+        ->with('type', 'warning');
+    }
+
+    function forcedelete($id) {
+        $product = Product::onlyTrashed()->findOrFail($id);
 
         $product = Product::findOrFail($id);
 
-        File::delete(public_path('images/'.$product->image)); // unlink
+        File::delete(public_path('images/'.$product->image));
 
-        $product->delete();
+        $product->forceDelete();
 
         return redirect()
-        ->route('products.index')
-        ->with('msg', 'Product deleted successfully')
-        ->with('type', 'error');
+        ->route('products.trash')
+        ->with('msg', 'Product deleted permanently successfully')
+        ->with('type', 'warning');
     }
+
 }
 
 // SELECT * FROM products LIMIT 10 OFFSET 20
