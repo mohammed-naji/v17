@@ -64,13 +64,7 @@
                 {{-- <td>{{ $product->id }}</td> --}}
                 <td>{{ $loop->iteration }}</td>
                 <td>
-                    @php
-                        $img = asset('images/no-image.jpg');
-                        if (file_exists(public_path('images/'.$product->image))) {
-                            $img = asset('images/'.$product->image);
-                        }
-                    @endphp
-                    <img width="80" src="{{ $img }}" alt="">
+                    <img width="80" src="{{ $product->path }}" alt="">
                 </td>
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->price }}$</td>

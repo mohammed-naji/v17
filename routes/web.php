@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RelationController;
 use App\Http\Controllers\StudentController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
@@ -184,5 +185,14 @@ Route::get('/products/trash', [ProductController::class, 'trash'])->name('produc
 Route::get('/products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore');
 Route::delete('/products/{product}/forcedelete', [ProductController::class, 'forcedelete'])->name('products.forcedelete');
 Route::resource('products', ProductController::class);
+
+
+
+
+Route::get('/users', [RelationController::class, 'users']);
+
+
+
+
 
 //
